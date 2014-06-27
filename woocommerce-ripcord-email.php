@@ -19,17 +19,20 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @param array $email_classes available email classes
  * @return array filtered available email classes
  */
-function add_ripcord_woocommerce_email( $email_classes ) {
-
+function add_ripcord_woocommerce_email( $email_classes ) 
+{
+	error_log( "Loading my mail classes.", 3, get_template_directory()."/mail.log" );
 	// include our custom email class
-	require_once( 'includes/class-wc-test-order-email.php' );
+	require_once( 'includes/class-test-order-email.php' );
 	require_once( 'includes/class-wc-ripcord-welcome-email.php' );
 
 	// add the email class to the list of email classes that WooCommerce loads
 	$email_classes['WC_Test_Order_Email'] = new WC_Test_Order_Email();
-	$email_classes['WC_Ripcord_Welcome_Email'] = new WC_Ripord_Welcome_Email();
+	$email_classes['WC_Ripcord_Welcome_Email'] = new WC_Ripcord_Welcome_Email();
 
 	return $email_classes;
 
 }
 add_filter( 'woocommerce_email_classes', 'add_ripcord_woocommerce_email' );
+
+

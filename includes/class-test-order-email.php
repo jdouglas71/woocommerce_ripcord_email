@@ -34,7 +34,7 @@ class WC_Test_Order_Email extends WC_Email {
 		$this->template_html  = 'emails/admin-new-order.php';
 		$this->template_plain = 'emails/plain/admin-new-order.php';
 
-		// Trigger on new paid orders
+		// Add action trigger
 		add_action( 'dcs-trigger-test-order-email', array( $this, 'trigger' ) );
 
 		// Call parent constructor to load any other defaults not explicity defined here
@@ -44,7 +44,7 @@ class WC_Test_Order_Email extends WC_Email {
 		$this->recipient = $this->get_option( 'recipient' );
 
 		// if none was entered, just use the WP admin email as a fallback
-		if ( ! $this->recipient )
+		if ( !$this->recipient )
 			$this->recipient = get_option( 'admin_email' );
 	}
 
@@ -71,11 +71,13 @@ class WC_Test_Order_Email extends WC_Email {
 		$this->find[] = '{order_number}';
 		$this->replace[] = $this->object->get_order_number();
 
-		if ( ! $this->is_enabled() || ! $this->get_recipient() )
+		if ( !$this->is_enabled() || ! $this->get_recipient() )
 			return;
 
 		// woohoo, send the email!
-		$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+		error_log( "Sending Test Email", 3, get_template_directory()."/trigger.log" );
+		//$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
+		wp_mail( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
 	}
 
 

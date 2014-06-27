@@ -34,7 +34,7 @@ class WC_Ripcord_Welcome_Email extends WC_Email {
 		$this->template_html  = 'emails/admin-new-order.php';
 		$this->template_plain = 'emails/plain/admin-new-order.php';
 
-		// Trigger on new paid orders
+		// Trigger action
 		add_action( 'rc-send-ripcord-welcome-email', array( $this, 'trigger' ) );
 
 		// Call parent constructor to load any other defaults not explicity defined here
@@ -75,7 +75,9 @@ class WC_Ripcord_Welcome_Email extends WC_Email {
 			return;
 
 		// woohoo, send the email!
-		$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers(), $this->get_attachments() );
+		error_log( "Sending Welcome Email", 3, get_template_directory()."/trigger.log" );
+		//$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
+		wp_mail( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
 	}
 
 
