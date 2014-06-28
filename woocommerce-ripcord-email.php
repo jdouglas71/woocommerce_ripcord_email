@@ -23,11 +23,13 @@ function add_ripcord_woocommerce_email( $email_classes )
 {
 	error_log( "Loading my mail classes.", 3, get_template_directory()."/mail.log" );
 	// include our custom email class
+	require_once( 'includes/class-order-confirmation-email.php' );
 	require_once( 'includes/class-test-order-email.php' );
 	require_once( 'includes/class-wc-ripcord-welcome-email.php' );
 
 	// add the email class to the list of email classes that WooCommerce loads
 	$email_classes['WC_Test_Order_Email'] = new WC_Test_Order_Email();
+	$email_classes['WC_Order_Confirmation_Email'] = new WC_Order_Confirmation_Email();
 	$email_classes['WC_Ripcord_Welcome_Email'] = new WC_Ripcord_Welcome_Email();
 
 	return $email_classes;
