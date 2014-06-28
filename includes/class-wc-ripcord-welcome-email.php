@@ -31,8 +31,8 @@ class WC_Ripcord_Welcome_Email extends WC_Email {
 		$this->subject = 'Welcome to Ripcord';
 
 		// these define the locations of the templates that this email should use, we'll just use the new order template since this email is similar
-		$this->template_html  = 'emails/admin-new-order.php';
-		$this->template_plain = 'emails/plain/admin-new-order.php';
+		$this->template_html  = 'emails/email-welcome.php';
+		$this->template_plain = 'emails/plain/email-welcome.php';
 
 		// Trigger action
 		add_action( 'rc-send-ripcord-welcome-email', array( $this, 'trigger' ) );
@@ -63,13 +63,6 @@ class WC_Ripcord_Welcome_Email extends WC_Email {
 
 		// setup order object
 		$this->object = new WC_Order( $order_id );
-
-		// replace variables in the subject/headings
-		$this->find[] = '{order_date}';
-		$this->replace[] = date_i18n( woocommerce_date_format(), strtotime( $this->object->order_date ) );
-
-		$this->find[] = '{order_number}';
-		$this->replace[] = $this->object->get_order_number();
 
 		if ( ! $this->is_enabled() || ! $this->get_recipient() )
 			return;
@@ -130,7 +123,7 @@ class WC_Ripcord_Welcome_Email extends WC_Email {
 			'recipient'  => array(
 				'title'       => 'Recipient(s)',
 				'type'        => 'text',
-				'description' => sprintf( 'Enter recipients (comma separated) for this email. Defaults to <code>%s</code>.', esc_attr( get_option( 'admin_email' ) ) ),
+				'description' => sprintf( 'Enter bcc recipients (comma separated) for this email. Defaults to <code>%s</code>.', esc_attr( get_option( 'admin_email' ) ) ),
 				'placeholder' => '',
 				'default'     => ''
 			),
