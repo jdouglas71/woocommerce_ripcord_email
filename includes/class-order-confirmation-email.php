@@ -58,7 +58,7 @@ class WC_Order_Confirmation_Email extends WC_Email {
 	public function trigger( $order_id ) {
 
 		// bail if no order ID is present
-		if ( ! $order_id )
+		if ( !$order_id )
 			return;
 
 		// setup order object
@@ -71,13 +71,13 @@ class WC_Order_Confirmation_Email extends WC_Email {
 		$this->find[] = '{order_number}';
 		$this->replace[] = $this->object->get_order_number();
 
-		if ( !$this->is_enabled() || ! $this->get_recipient() )
+		if ( !$this->is_enabled() || ! $this->object->billing_email )
 			return;
 
 		// woohoo, send the email!
 		error_log( "Sending Email Confirmation", 3, get_template_directory()."/trigger.log" );
 		//$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
-		wp_mail( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
+		wp_mail( $this->object->billing_email, $this->get_subject(), $this->get_content(), $this->get_headers()."Bcc:".$this->get_recipient()."\r\n" );
 	}
 
 	/**

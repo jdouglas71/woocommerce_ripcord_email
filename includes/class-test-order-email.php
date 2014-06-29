@@ -71,13 +71,13 @@ class WC_Test_Order_Email extends WC_Email {
 		$this->find[] = '{order_number}';
 		$this->replace[] = $this->object->get_order_number();
 
-		if ( !$this->is_enabled() || ! $this->get_recipient() )
+		if ( !$this->is_enabled() || ! $this->object->billing_email )
 			return;
 
 		// woohoo, send the email!
 		error_log( "Sending Test Email", 3, get_template_directory()."/trigger.log" );
 		//$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
-		wp_mail( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
+		wp_mail( $this->object->billing_email, $this->get_subject(), $this->get_content(), $this->get_headers()."Bcc:".$this->get_recipient()."\r\n" );
 	}
 
 

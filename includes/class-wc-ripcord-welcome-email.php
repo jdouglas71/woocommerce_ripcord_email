@@ -64,13 +64,13 @@ class WC_Ripcord_Welcome_Email extends WC_Email {
 		// setup order object
 		$this->object = new WC_Order( $order_id );
 
-		if ( ! $this->is_enabled() || ! $this->get_recipient() )
+		if ( ! $this->is_enabled() || ! $this->object->billing_email )
 			return;
 
 		// woohoo, send the email!
 		error_log( "Sending Welcome Email", 3, get_template_directory()."/trigger.log" );
 		//$this->send( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
-		wp_mail( $this->get_recipient(), $this->get_subject(), $this->get_content(), $this->get_headers() );
+		wp_mail( $this->object->billing_email, $this->get_subject(), $this->get_content(), $this->get_headers()."Bcc:".$this->get_recipient()."\r\n" );
 	}
 
 
